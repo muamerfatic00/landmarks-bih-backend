@@ -1,3 +1,5 @@
+from typing import Optional
+
 from fastapi_camelcase import CamelModel
 
 
@@ -15,3 +17,8 @@ class CityRequest(CamelModel):
     name: str
     description: str
     image_url: str
+
+class CityUpdateRequest(CamelModel):
+    name:str
+    description: str
+    image_url: Optional[str]

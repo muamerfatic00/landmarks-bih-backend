@@ -38,8 +38,21 @@ class BaseRepository(Generic[ModelType]):
     async def get_all(self) -> Optional[list[ModelType]]:
         query = select(self.model)
         result = await self.session.execute(query)
-        items=result.scalars().all()
+        items = result.scalars().all()
         return items if items else None
+
+    async def update(self, record_for_update ,data_for_update: dict[str, Any]):
+        # handle if not record for update
+        for key, value in data_for_update.items():
+            setattr(record_for_update, key, value)
+        try:
+            await self.session.commit()
+            await self.session.refresh(record_for_update)
+        except:
+            await self.session.rollback()
+            raise
+        finally:
+            await self.session.close()
 
     async def delete(self, record_for_delete: ModelType):
         try:
