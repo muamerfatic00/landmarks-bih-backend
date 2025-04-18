@@ -6,6 +6,7 @@ from sqlalchemy.exc import IntegrityError, NoResultFound
 from src.app.dto.city import CityResponse, CityRequest, CityUpdateRequest
 from src.app.models import City
 from src.app.repositories.city_repository import CityRepository
+from src.app.schemas.paginated import PaginationParam
 from src.app.utils.dto_utils import to_dto
 
 
@@ -20,6 +21,14 @@ class CityService:
             if isinstance(e, IntegrityError):
                 raise HTTPException(status_code=409, detail=f"City with name {data.name} already exists.")
             raise HTTPException(status_code=422, detail="Invalid city format")
+
+    async def get_paginated(self, pagination_param: PaginationParam):
+        try:
+            paginated_list = await self.repository.get_paginated(pagination_param)
+            paginated_list.items = [to_dto(CityResponse, item) for item in paginated_list.items]
+            return paginated_list
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=str(e))
 
     async def get_by_id(self, id: int) -> Optional[CityResponse]:
         try:

@@ -1,9 +1,13 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
+from fastapi.params import Query
+from fastapi_pagination import Page
+from pydantic import ValidationError
 from starlette import status
 
 from src.app.dto.city import CityResponse, CityRequest, CityUpdateRequest
 from src.app.factory.factory import get_city_service
 from src.app.models import City
+from src.app.schemas.paginated import PaginationParam
 from src.app.services.city_service import CityService
 
 city_router = APIRouter(prefix='/cities', tags=['cities'])
@@ -12,6 +16,18 @@ city_router = APIRouter(prefix='/cities', tags=['cities'])
 @city_router.post('', response_model=CityResponse, status_code=status.HTTP_201_CREATED)
 async def create_city(data: CityRequest, city_service: CityService = Depends(get_city_service)) -> City:
     return await city_service.create(data)
+
+
+@city_router.get("/list", status_code=status.HTTP_200_OK, response_model=Page[CityResponse])
+async def get_paginated_cities(page: int = Query(default=1), page_size: int = Query(default=10),
+                               city_service: CityService = Depends(get_city_service)):
+    try:
+        pagination = PaginationParam(page=page, page_size=page_size)
+        return await city_service.get_paginated(pagination)
+    except Exception as e:
+        if isinstance(e, ValidationError):
+            raise HTTPException(status_code=400, detail=f"Query params page and page_size must be greater than 0!")
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 @city_router.get('/{city_id}', response_model=CityResponse, status_code=status.HTTP_200_OK)

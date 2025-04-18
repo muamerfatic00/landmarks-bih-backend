@@ -1,10 +1,13 @@
+import math
 from typing import Generic, Type, cast, Any
 
-from sqlalchemy import select
+from fastapi_pagination import Page
+from sqlalchemy import select, func
 from sqlalchemy.ext.asyncio import AsyncSession
 from typing_extensions import TypeVar, Optional
 
 from src.app.database import Base
+from src.app.schemas.paginated import PaginationParam
 
 ModelType = TypeVar('ModelType', bound=Base)
 
@@ -41,8 +44,27 @@ class BaseRepository(Generic[ModelType]):
         items = result.scalars().all()
         return items if items else None
 
-    async def update(self, record_for_update ,data_for_update: dict[str, Any]):
-        # handle if not record for update
+    async def get_paginated(
+            self,
+            pagination_param: PaginationParam
+    ) -> Page[ModelType]:
+        page_size = pagination_param.page_size
+        current_page = pagination_param.page
+
+        query = select(func.count()).select_from(self.model)
+        result = await self.session.execute(query)
+        total_items = result.scalar_one()
+
+        total_pages = math.ceil(total_items / page_size)
+        offset = (current_page - 1) * page_size
+
+        query = select(self.model).offset(offset).limit(page_size)
+        result = await self.session.execute(query)
+        items = result.scalars().all()
+
+        return Page[ModelType](total=total_items, items=items, page=current_page, size=page_size, pages=total_pages)
+
+    async def update(self, record_for_update, data_for_update: dict[str, Any]):
         for key, value in data_for_update.items():
             setattr(record_for_update, key, value)
         try:
