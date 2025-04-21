@@ -4,6 +4,7 @@ from typing import Generic, Type, cast, Any
 from fastapi_pagination import Page
 from sqlalchemy import select, func
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import selectinload
 from typing_extensions import TypeVar, Optional
 
 from src.app.database import Base
@@ -31,10 +32,16 @@ class BaseRepository(Generic[ModelType]):
             raise e
         return new_record
 
-    async def get_by(self, field: str, value, unique=True) -> Optional[ModelType]:
+    async def get_by(self, field: str, value, unique=True, join=False) -> Optional[ModelType]:
         if not hasattr(self.model, field):
             raise ValueError(f'Field {field} is not defined')
-        query = select(self.model).where(cast("ColumnElement[bool]", getattr(self.model, field) == value))
+
+        if join:
+            query = (select(self.model).options(selectinload(cast("Literal['*']","*"))).where(
+                cast("ColumnElement[bool]", getattr(self.model, field) == value)))
+        else:
+            query = select(self.model).where(cast("ColumnElement[bool]", getattr(self.model, field) == value))
+
         result = await self.session.execute(query)
         return result.unique().scalar_one_or_none() if unique else result.scalar()
 

@@ -32,7 +32,8 @@ class CityService:
 
     async def get_by_id(self, id: int) -> Optional[CityResponse]:
         try:
-            city = await self.repository.get_by("id", id, True)
+            city = await self.repository.get_by("id", id, unique=True, join=True)
+            print(city)
             if not city:
                 raise NoResultFound(f"City with id {id} does not exist.")
             city_response = to_dto(CityResponse, city)

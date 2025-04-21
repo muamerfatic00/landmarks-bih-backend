@@ -15,6 +15,8 @@ class Landmark(Base):
     contact_number = Column(String)
     mail = Column(String)
     city_id = Column(ForeignKey('cities.id'))
+
+    # Relationships
     city = relationship('City', back_populates='landmarks')
 
     def __str__(self):

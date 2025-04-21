@@ -11,12 +11,14 @@ class City(Base):
     name = Column(String, nullable=False, unique=True)
     description = Column(String)
     image_url = Column(String)
-    google_maps_url=Column(String)
-    landmarks=relationship("Landmark", back_populates="city")
+    google_maps_url = Column(String)
+
+    # Relationships
+    landmarks = relationship("Landmark", back_populates="city")
 
     def __str__(self):
         return (
-            f"<City(id='{self.id}', name='{self.name}', description='{self.description}', image_url='{self.image_url}')>")
+            f"<City(id='{self.id}', name='{self.name}', description='{self.description}', image_url='{self.image_url}', landmarks='{self.landmarks}')>")
 
     def __repr__(self):
         return f"City({self.id},{self.name},{self.description},{self.image_url})"

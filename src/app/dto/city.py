@@ -2,23 +2,27 @@ from typing import Optional
 
 from fastapi_camelcase import CamelModel
 
+from src.app.dto.landmark import LandmarkResponse
 
-class CityResponse(CamelModel):
+
+class CityBase(CamelModel):
+    name: str
+    description: str
+
+
+class CityResponse(CityBase):
     id: int
-    name: str
-    description: str
+    image_url: str
+    landmarks: Optional[list[LandmarkResponse]]
+
+    class Config:
+        from_attributes=True
+        arbitrary_types_allowed=True
+
+
+class CityRequest(CityBase):
     image_url: str
 
-    model_config = {
-        "from_attributes": True
-    }
 
-class CityRequest(CamelModel):
-    name: str
-    description: str
-    image_url: str
-
-class CityUpdateRequest(CamelModel):
-    name:str
-    description: str
+class CityUpdateRequest(CityBase):
     image_url: Optional[str]
