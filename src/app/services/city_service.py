@@ -6,7 +6,7 @@ from sqlalchemy.exc import IntegrityError, NoResultFound
 from src.app.dto.city import CityResponse, CityRequest, CityUpdateRequest
 from src.app.models import City
 from src.app.repositories.city_repository import CityRepository
-from src.app.schemas.paginated import PaginationParam
+from src.app.schemas.pagination import PaginationParam
 from src.app.utils.dto_utils import to_dto
 
 

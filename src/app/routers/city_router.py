@@ -7,7 +7,7 @@ from starlette import status
 from src.app.dto.city import CityResponse, CityRequest, CityUpdateRequest
 from src.app.factory.factory import get_city_service
 from src.app.models import City
-from src.app.schemas.paginated import PaginationParam
+from src.app.schemas.pagination import PaginationParam
 from src.app.services.city_service import CityService
 
 city_router = APIRouter(prefix='/cities', tags=['cities'])
@@ -18,7 +18,7 @@ async def create_city(data: CityRequest, city_service: CityService = Depends(get
     return await city_service.create(data)
 
 
-@city_router.get("/list", status_code=status.HTTP_200_OK, response_model=Page[CityResponse])
+@city_router.get("/list", response_model=Page[CityResponse], status_code=status.HTTP_200_OK, )
 async def get_paginated_cities(page: int = Query(default=1), page_size: int = Query(default=10),
                                city_service: CityService = Depends(get_city_service)):
     try:
@@ -26,7 +26,7 @@ async def get_paginated_cities(page: int = Query(default=1), page_size: int = Qu
         return await city_service.get_paginated(pagination)
     except Exception as e:
         if isinstance(e, ValidationError):
-            raise HTTPException(status_code=400, detail=f"Query params page and page_size must be greater than 0!")
+            raise HTTPException(status_code=400, detail="Query params page and page_size must be greater than 0!")
         raise HTTPException(status_code=500, detail=str(e))
 
 
@@ -35,7 +35,7 @@ async def get_city(city_id: int, city_service: CityService = Depends(get_city_se
     return await city_service.get_by_id(city_id)
 
 
-@city_router.get("", status_code=status.HTTP_200_OK, response_model=list[CityResponse])
+@city_router.get("", response_model=list[CityResponse], status_code=status.HTTP_200_OK)
 async def get_all_cities(city_service: CityService = Depends(get_city_service)) -> list[CityResponse]:
     return await city_service.get_all()
 

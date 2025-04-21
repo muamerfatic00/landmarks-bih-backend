@@ -7,7 +7,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from typing_extensions import TypeVar, Optional
 
 from src.app.database import Base
-from src.app.schemas.paginated import PaginationParam
+from src.app.schemas.pagination import PaginationParam
 
 ModelType = TypeVar('ModelType', bound=Base)
 
