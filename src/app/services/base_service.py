@@ -1,14 +1,17 @@
 from typing import Optional, Type
 
 from fastapi import HTTPException
+from fastapi_pagination import Page
 from pydantic import BaseModel
 from sqlalchemy.exc import NoResultFound
 from typing_extensions import TypeVar
 
 from src.app.repositories.base_repository import BaseRepository
+from src.app.schemas.pagination import PaginationParam
 from src.app.utils.dto_utils import to_dto
 
 ResponseModel = TypeVar('ResponseModel', bound=BaseModel)
+RequestModel = TypeVar('RequestModel', bound=BaseModel)
 
 
 class BaseService:
@@ -29,6 +32,39 @@ class BaseService:
             if not record:
                 raise NoResultFound(f"Record with id {_id} does not exist.")
             return to_dto(response_model, record)
+        except Exception as e:
+            if isinstance(e, NoResultFound):
+                raise HTTPException(status_code=404, detail=str(e))
+            raise HTTPException(status_code=500, detail=str(e))
+
+    async def get_paginated(self, pagination_param: PaginationParam, response_model: Type[ResponseModel])->Page:
+        try:
+            paginated_list = await self.repository.get_paginated(pagination_param, join=True)
+            paginated_list.items = [to_dto(response_model, item) for item in paginated_list.items]
+            return paginated_list
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=str(e))
+
+    async def update(self, _id: int, data: RequestModel, response_model: Type[ResponseModel]) -> Optional[
+        ResponseModel]:
+        try:
+            record_for_update = await self.repository.get_by("id", _id, unique=True)
+            print(record_for_update)
+            if not record_for_update:
+                raise NoResultFound(f"Record with id {_id} does not exist.")
+            await self.repository.update(record_for_update, data.__dict__)
+            return to_dto(response_model, record_for_update)
+        except Exception as e:
+            if isinstance(e, NoResultFound):
+                raise HTTPException(status_code=404, detail=str(e))
+            raise HTTPException(status_code=500, detail=str(e))
+
+    async def delete_by_id(self, _id: int) -> None:
+        try:
+            record_for_delete = await self.repository.get_by("id", _id, unique=True)
+            if not record_for_delete:
+                raise NoResultFound(f"Record with id {_id} does not exist.")
+            await self.repository.delete(record_for_delete)
         except Exception as e:
             if isinstance(e, NoResultFound):
                 raise HTTPException(status_code=404, detail=str(e))
