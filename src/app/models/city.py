@@ -18,7 +18,7 @@ class City(Base):
 
     def __str__(self):
         return (
-            f"<City(id='{self.id}', name='{self.name}', description='{self.description}', image_url='{self.image_url}', landmarks='{self.landmarks}')>")
+            f"<City(id='{self.id}', name='{self.name}', description='{self.description}', image_url='{self.image_url}', landmarks='{self.landmarks}', google_maps_url='{self.google_maps_url}')>")
 
     def __repr__(self):
-        return f"City({self.id},{self.name},{self.description},{self.image_url})"
+        return f"City({self.id},{self.name},{self.description},{self.image_url},{self.google_maps_url})"
