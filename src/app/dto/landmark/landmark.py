@@ -3,9 +3,10 @@ from typing import Optional
 from fastapi_camelcase import CamelModel
 
 from src.app.dto.city.city_without_landmark import CityWithoutLandmarkResponse
+from src.app.dto.timestamp import TimestampDto
 
 
-class LandmarkBase(CamelModel):
+class LandmarkBase(CamelModel,TimestampDto):
     name: str
     description: str
     image_url: Optional[str]

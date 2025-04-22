@@ -2,8 +2,10 @@ from typing import Optional
 
 from fastapi_camelcase import CamelModel
 
+from src.app.dto.timestamp import TimestampDto
 
-class CityWithoutLandmarkResponse(CamelModel):
+
+class CityWithoutLandmarkResponse(CamelModel, TimestampDto):
     id: int
     name: str
     description: str

@@ -3,9 +3,10 @@ from typing import Optional
 from fastapi_camelcase import CamelModel
 
 from src.app.dto.landmark.landmark import LandmarkWithoutCityResponse
+from src.app.dto.timestamp import TimestampDto
 
 
-class CityBase(CamelModel):
+class CityBase(CamelModel, TimestampDto):
     name: str
     description: str
     google_maps_url: Optional[str]

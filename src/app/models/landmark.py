@@ -2,9 +2,10 @@ from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship
 
 from src.app.database import Base
+from src.app.models.timestamp import TimestampMixin
 
 
-class Landmark(Base):
+class Landmark(Base,TimestampMixin):
     __tablename__ = 'landmarks'
 
     id = Column(Integer, primary_key=True)
