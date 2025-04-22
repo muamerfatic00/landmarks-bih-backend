@@ -1,0 +1,35 @@
+from typing import Optional, Type
+
+from fastapi import HTTPException
+from pydantic import BaseModel
+from sqlalchemy.exc import NoResultFound
+from typing_extensions import TypeVar
+
+from src.app.repositories.base_repository import BaseRepository
+from src.app.utils.dto_utils import to_dto
+
+ResponseModel = TypeVar('ResponseModel', bound=BaseModel)
+
+
+class BaseService:
+    def __init__(self, repository: BaseRepository):
+        self.repository = repository
+
+    async def get_all(self, response_model: Type[ResponseModel]) -> Optional[list[ResponseModel]]:
+        try:
+            list_of_records = await self.repository.get_all(join=True)
+            response = [to_dto(response_model, record) for record in list_of_records]
+            return response
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=str(e))
+
+    async def get_by_id(self, _id: int, response_model: Type[ResponseModel]) -> Optional[ResponseModel]:
+        try:
+            record = await self.repository.get_by("id", _id, unique=True, join=True)
+            if not record:
+                raise NoResultFound(f"Record with id {_id} does not exist.")
+            return to_dto(response_model, record)
+        except Exception as e:
+            if isinstance(e, NoResultFound):
+                raise HTTPException(status_code=404, detail=str(e))
+            raise HTTPException(status_code=500, detail=str(e))
