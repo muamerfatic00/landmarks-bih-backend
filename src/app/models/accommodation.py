@@ -15,8 +15,8 @@ class Accommodation(Base, TimestampMixin):
     google_maps_url = Column(String)
     contact_number = Column(String)
     mail = Column(String)
-    city_id = Column(Integer, ForeignKey('cities.id'))
-    landmark_id = Column(Integer, ForeignKey('landmarks.id'))
+    city_id = Column(Integer, ForeignKey('cities.id', ondelete='SET NULL'))
+    landmark_id = Column(Integer, ForeignKey('landmarks.id', ondelete='SET NULL'))
 
     # relationships
     city = relationship('City', back_populates='accommodations')

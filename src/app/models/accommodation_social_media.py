@@ -12,7 +12,7 @@ class AccommodationSocialMedia(Base, TimestampMixin):
     id = Column(Integer, primary_key=True)
     type = Column(SqlEnum(SocialMediaType), nullable=False)
     url = Column(String, nullable=False)
-    accommodation_id = Column(Integer, ForeignKey("accommodations.id"), nullable=False)
+    accommodation_id = Column(Integer, ForeignKey("accommodations.id", ondelete='CASCADE'), nullable=False)
 
     # relationships
     accommodation = relationship("Accommodation", back_populates="social_medias")

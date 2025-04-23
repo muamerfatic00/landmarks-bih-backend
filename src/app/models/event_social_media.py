@@ -12,7 +12,7 @@ class EventSocialMedia(Base,TimestampMixin):
     id = Column(Integer, primary_key=True)
     type = Column(SqlEnum(SocialMediaType), nullable=False)
     url = Column(String, nullable=False)
-    event_id = Column(Integer, ForeignKey("events.id"), nullable=False)
+    event_id = Column(Integer, ForeignKey("events.id", ondelete='CASCADE'), nullable=False)
 
     # relationships
     event = relationship("Event", back_populates="social_medias")

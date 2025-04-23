@@ -12,7 +12,7 @@ class RestaurantSocialMedia(Base, TimestampMixin):
     id = Column(Integer, primary_key=True)
     type = Column(SqlEnum(SocialMediaType), nullable=False)
     url = Column(String, nullable=False)
-    restaurant_id = Column(Integer, ForeignKey("restaurants.id"), nullable=False)
+    restaurant_id = Column(Integer, ForeignKey("restaurants.id", ondelete='CASCADE'), nullable=False)
 
     # relationships
     restaurant = relationship("Restaurant", back_populates="social_medias")

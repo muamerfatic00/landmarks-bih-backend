@@ -15,7 +15,7 @@ class Landmark(Base, TimestampMixin):
     google_maps_url = Column(String)
     contact_number = Column(String)
     mail = Column(String)
-    city_id = Column(Integer, ForeignKey('cities.id'))
+    city_id = Column(Integer, ForeignKey('cities.id', ondelete='SET NULL'))
 
     # Relationships
     city = relationship('City', back_populates='landmarks')

@@ -17,8 +17,8 @@ class Event(Base, TimestampMixin):
     mail = Column(String)
     date = Column(Date)
     time = Column(Time)
-    city_id = Column(Integer, ForeignKey('cities.id'))
-    landmark_id = Column(Integer, ForeignKey('landmarks.id'))
+    city_id = Column(Integer, ForeignKey('cities.id', ondelete='SET NULL'))
+    landmark_id = Column(Integer, ForeignKey('landmarks.id', ondelete='SET NULL'))
 
     # relationships
     city = relationship('City', back_populates='events')
