@@ -5,7 +5,7 @@ from pydantic import ValidationError
 from starlette import status
 
 from src.app.dto.city.city import CityResponse, CityRequest, CityUpdateRequest
-from src.app.dto.city.city_without_landmark import CityWithoutLandmarkResponse
+from src.app.dto.city.city_base_response import CityBaseResponse
 from src.app.factory.factory import get_city_service, get_base_service
 from src.app.models import City
 from src.app.schemas.pagination import PaginationParam
@@ -15,9 +15,9 @@ from src.app.services.city_service import CityService
 city_router = APIRouter(prefix='/cities', tags=['cities'])
 
 
-@city_router.post('', response_model=CityWithoutLandmarkResponse, status_code=status.HTTP_201_CREATED)
+@city_router.post('', response_model=CityBaseResponse, status_code=status.HTTP_201_CREATED)
 async def create_city(data: CityRequest,
-                      city_service: CityService = Depends(get_city_service)) -> CityWithoutLandmarkResponse:
+                      city_service: CityService = Depends(get_city_service)) -> CityBaseResponse:
     return await city_service.create(data)
 
 @city_router.get('/list', response_model=Page[CityResponse], status_code=status.HTTP_200_OK)
@@ -42,10 +42,10 @@ async def get_all_cities(base_service: BaseService = Depends(get_base_service(Ci
     return await base_service.get_all(CityResponse)
 
 
-@city_router.put('/{_id}', response_model=CityWithoutLandmarkResponse, status_code=status.HTTP_200_OK)
+@city_router.put('/{_id}', response_model=CityBaseResponse, status_code=status.HTTP_200_OK)
 async def update_city(_id: int, data_for_update: CityUpdateRequest,
-                      base_service: BaseService = Depends(get_base_service(City))) -> CityWithoutLandmarkResponse:
-    return await base_service.update(_id, data_for_update, CityWithoutLandmarkResponse)
+                      base_service: BaseService = Depends(get_base_service(City))) -> CityBaseResponse:
+    return await base_service.update(_id, data_for_update, CityBaseResponse)
 
 
 @city_router.delete('/{_id}', status_code=status.HTTP_204_NO_CONTENT)

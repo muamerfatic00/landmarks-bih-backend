@@ -4,7 +4,7 @@ from fastapi import HTTPException
 from sqlalchemy.exc import IntegrityError
 
 from src.app.dto.city.city import CityRequest
-from src.app.dto.city.city_without_landmark import CityWithoutLandmarkResponse
+from src.app.dto.city.city_base_response import CityBaseResponse
 from src.app.repositories.city_repository import CityRepository
 from src.app.utils.dto_utils import to_dto
 
@@ -13,10 +13,10 @@ class CityService:
     def __init__(self, repository: CityRepository):
         self.repository = repository
 
-    async def create(self, data: CityRequest) -> Optional[CityWithoutLandmarkResponse]:
+    async def create(self, data: CityRequest) -> Optional[CityBaseResponse]:
         try:
             created_city = await self.repository.create(data.__dict__)
-            return to_dto(CityWithoutLandmarkResponse, created_city)
+            return to_dto(CityBaseResponse, created_city)
         except Exception as e:
             if isinstance(e, IntegrityError):
                 raise HTTPException(status_code=409, detail=f"City with name {data.name} already exists.")

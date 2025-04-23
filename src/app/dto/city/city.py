@@ -2,20 +2,26 @@ from typing import Optional
 
 from fastapi_camelcase import CamelModel
 
-from src.app.dto.landmark.landmark import LandmarkWithoutCityResponse
+from src.app.dto.accommodation.accommodation import AccommodationBaseResponse
+from src.app.dto.event.event import EventBaseResponse
+from src.app.dto.landmark.landmark import LandmarkBaseResponse
+from src.app.dto.restaurant.restaurant import RestaurantBaseResponse
 from src.app.dto.timestamp import TimestampDto
 
 
-class CityBase(CamelModel, TimestampDto):
+class CityBase(CamelModel):
     name: str
     description: str
     google_maps_url: Optional[str]
 
 
-class CityResponse(CityBase):
+class CityResponse(CityBase, TimestampDto):
     id: int
     image_url: str
-    landmarks: Optional[list[LandmarkWithoutCityResponse]]
+    landmarks: Optional[list[LandmarkBaseResponse]]
+    accommodations: Optional[list[AccommodationBaseResponse]]
+    events: Optional[list[EventBaseResponse]]
+    restaurants: Optional[list[RestaurantBaseResponse]]
 
     class Config:
         from_attributes = True
