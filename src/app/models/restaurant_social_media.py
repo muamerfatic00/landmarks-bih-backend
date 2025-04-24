@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Enum as SqlEnum, ForeignKey, Integer, String
+from sqlalchemy import Column, Enum as SqlEnum, ForeignKey, Integer, String, UniqueConstraint
 from sqlalchemy.orm import relationship
 
 from src.app.database import Base
@@ -16,6 +16,11 @@ class RestaurantSocialMedia(Base, TimestampMixin):
 
     # relationships
     restaurant = relationship("Restaurant", back_populates="social_medias")
+
+    # constraints
+    __table_args__ = (
+        UniqueConstraint('restaurant_id', 'type', name='restaurants_social_media_unique_constraint'),
+    )
 
     def __str__(self):
         return f"<RestaurantSocialMedia(id={self.id}, type={self.type}, url={self.url}, restaurant_id={self.restaurant_id})>"
