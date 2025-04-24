@@ -5,7 +5,7 @@ from fastapi_camelcase import CamelModel
 from src.app.dto.timestamp import TimestampDto
 
 
-class RestaurantBase(CamelModel, TimestampDto):
+class RestaurantBase(CamelModel):
     name: str
     description: Optional[str]
     image_url: Optional[str]
@@ -17,7 +17,7 @@ class RestaurantBase(CamelModel, TimestampDto):
     landmark_id: Optional[int]
 
 
-class RestaurantBaseResponse(RestaurantBase):
+class RestaurantBaseResponse(RestaurantBase, TimestampDto):
     id: int
 
     class Config:

@@ -9,7 +9,7 @@ from src.app.dto.restaurant.restaurant import RestaurantBaseResponse
 from src.app.dto.timestamp import TimestampDto
 
 
-class LandmarkBase(CamelModel ):
+class LandmarkBase(CamelModel):
     name: str
     description: str
     image_url: Optional[str]
@@ -18,18 +18,16 @@ class LandmarkBase(CamelModel ):
     mail: Optional[str]
 
 
-class LandmarkCreateRequest(LandmarkBase):
+class LandmarkPostRequest(LandmarkBase):
     city_id: Optional[int]
 
 
-class LandmarkUpdateRequest(LandmarkBase):
+class LandmarkPutRequest(LandmarkBase):
+    id: int
     city_id: Optional[int]
 
-    class Config:
-        from_attributes = True
 
-
-class LandmarkResponse(LandmarkBase,TimestampDto):
+class LandmarkDetailResponse(LandmarkBase, TimestampDto):
     id: int
     city: Optional[CityBaseResponse]
     accommodations: Optional[list[AccommodationBaseResponse]]
@@ -39,15 +37,3 @@ class LandmarkResponse(LandmarkBase,TimestampDto):
     class Config:
         from_attributes = True
         arbitrary_types_allowed = True
-
-
-class LandmarkPostResponse(LandmarkCreateRequest,TimestampDto):
-    class Config:
-        from_attributes = True
-
-
-class LandmarkBaseResponse(LandmarkBase,TimestampDto):
-    id: int
-
-    class Config:
-        from_attributes = True

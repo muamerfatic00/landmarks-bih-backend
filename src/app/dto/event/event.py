@@ -6,7 +6,7 @@ from fastapi_camelcase import CamelModel
 from src.app.dto.timestamp import TimestampDto
 
 
-class EventBase(CamelModel, TimestampDto):
+class EventBase(CamelModel):
     name: str
     description: Optional[str]
     image_url: Optional[str]
@@ -23,6 +23,5 @@ class EventBase(CamelModel, TimestampDto):
         from_attributes = True
 
 
-
-class EventBaseResponse(EventBase):
+class EventBaseResponse(EventBase, TimestampDto):
     id: int
