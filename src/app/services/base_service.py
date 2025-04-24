@@ -23,6 +23,8 @@ class BaseService:
             created_record = await self.repository.create(data.__dict__)
             return to_dto(response_model, created_record)
         except Exception as e:
+            if isinstance(e, IntegrityError):
+                raise HTTPException(status_code=403, detail="Data conflict: duplicate or invalid entry.")
             raise HTTPException(status_code=400, detail=str(e))
 
     async def get_all(self, response_model: Type[ResponseModel]) -> Optional[list[ResponseModel]]:
