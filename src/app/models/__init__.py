@@ -6,5 +6,4 @@ from .event_social_media import EventSocialMedia
 from .landmark import Landmark
 from .restaurant import Restaurant
 from .restaurant_social_media import RestaurantSocialMedia
-from .social_media_type import SocialMediaType
 from .timestamp import TimestampMixin
