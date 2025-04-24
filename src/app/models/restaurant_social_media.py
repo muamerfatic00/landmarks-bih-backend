@@ -2,7 +2,7 @@ from sqlalchemy import Column, Enum as SqlEnum, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
 
 from src.app.database import Base
-from src.app.models.social_media_type import SocialMediaType
+from src.app.enums.social_media_type import SocialMediaType
 from src.app.models.timestamp import TimestampMixin
 
 
