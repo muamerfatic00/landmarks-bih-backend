@@ -3,7 +3,7 @@ from typing import Optional
 from fastapi import HTTPException
 from sqlalchemy.exc import IntegrityError
 
-from src.app.dto.city.city import CityRequest
+from src.app.dto.city.city import CityPostRequest
 from src.app.dto.city.city_base_response import CityBaseResponse
 from src.app.repositories.city_repository import CityRepository
 from src.app.utils.dto_utils import to_dto
@@ -13,7 +13,7 @@ class CityService:
     def __init__(self, repository: CityRepository):
         self.repository = repository
 
-    async def create(self, data: CityRequest) -> Optional[CityBaseResponse]:
+    async def create(self, data: CityPostRequest) -> Optional[CityBaseResponse]:
         try:
             created_city = await self.repository.create(data.__dict__)
             return to_dto(CityBaseResponse, created_city)
