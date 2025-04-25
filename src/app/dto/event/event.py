@@ -4,6 +4,7 @@ from typing import Optional
 from fastapi_camelcase import CamelModel
 
 from src.app.dto.city.city_base_response import CityBaseResponse
+from src.app.dto.establishment.establishment import EstablishmentBaseCommon, EstablishmentDetailCommon
 from src.app.dto.event.event_social_media import EventSocialMediaBaseResponse
 from src.app.dto.landmark.landmark_base_response import LandmarkBaseResponse
 from src.app.dto.timestamp import TimestampDto
@@ -24,31 +25,18 @@ class EventBase(CamelModel):
         from_attributes = True
 
 
-class EventPostRequest(EventBase):
-    city_id: Optional[int]
-    landmark_id: Optional[int]
+class EventPostRequest(EstablishmentBaseCommon, EventBase):
+    pass
 
 
-class EventPutRequest(EventBase):
+class EventPutRequest(EstablishmentBaseCommon, EventBase):
     id: int
-    city_id: Optional[int]
-    landmark_id: Optional[int]
 
 
-class EventBaseResponse(EventBase, TimestampDto):
+class EventBaseResponse(EstablishmentBaseCommon, EventBase, TimestampDto):
     id: int
-    city_id: Optional[int]
-    landmark_id: Optional[int]
-
-    class Config:
-        from_attributes = True
 
 
-class EventDetailResponse(EventBase, TimestampDto):
+class EventDetailResponse(EventBase, EstablishmentDetailCommon, TimestampDto):
     id: int
-    city: Optional[CityBaseResponse]
-    landmark: Optional[LandmarkBaseResponse]
     social_medias: Optional[list[EventSocialMediaBaseResponse]]
-
-    class Config:
-        from_attributes = True
