@@ -7,19 +7,19 @@ from src.app.models.timestamp import TimestampMixin
 
 
 class EventSocialMedia(Base, TimestampMixin):
-    __tablename__ = 'events_social_medias'
+    __tablename__ = "events_social_medias"
 
     id = Column(Integer, primary_key=True)
     type = Column(SqlEnum(SocialMediaType), nullable=False)
     url = Column(String, nullable=False)
-    event_id = Column(Integer, ForeignKey("events.id", ondelete='CASCADE'), nullable=False)
+    event_id = Column(Integer, ForeignKey("events.id", ondelete="CASCADE"), nullable=False)
 
     # relationships
     event = relationship("Event", back_populates="social_medias")
 
     # constraints
     __table_args__ = (
-        UniqueConstraint('event_id', 'type', name='events_social_media_unique_constraint'),
+        UniqueConstraint("event_id", "type", name="events_social_media_unique_constraint"),
     )
 
     def __str__(self):

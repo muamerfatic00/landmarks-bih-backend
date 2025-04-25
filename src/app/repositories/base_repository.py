@@ -10,7 +10,7 @@ from typing_extensions import TypeVar, Optional
 from src.app.database import Base
 from src.app.schemas.pagination import PaginationParam
 
-ModelType = TypeVar('ModelType', bound=Base)
+ModelType = TypeVar("ModelType", bound=Base)
 
 
 class BaseRepository(Generic[ModelType]):
@@ -37,7 +37,7 @@ class BaseRepository(Generic[ModelType]):
 
     async def get_by(self, field: str, value, unique: bool = True, join: bool = False) -> Optional[ModelType]:
         if not hasattr(self.model, field):
-            raise ValueError(f'Field {field} is not defined')
+            raise ValueError(f"Field {field} is not defined")
 
         if join:
             query = (select(self.model).options(selectinload(cast(self.type_for_loading, "*"))).where(

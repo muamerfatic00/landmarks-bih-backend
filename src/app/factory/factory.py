@@ -4,7 +4,8 @@ from fastapi import Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.app.database.database import get_db, Base
-from src.app.models import Landmark
+from src.app.models import Landmark, Accommodation, Event, Restaurant, AccommodationSocialMedia, EventSocialMedia, \
+    RestaurantSocialMedia
 from src.app.models.city import City
 from src.app.repositories.base_repository import BaseRepository
 from src.app.repositories.city_repository import CityRepository
@@ -13,7 +14,7 @@ from src.app.services.base_service import BaseService
 from src.app.services.city_service import CityService
 from src.app.services.landmark_service import LandmarkService
 
-ModelType = TypeVar('ModelType', bound=Base)
+ModelType = TypeVar("ModelType", bound=Base)
 
 
 def get_base_repository(model_class: Type[ModelType]):
@@ -44,3 +45,27 @@ def get_landmark_repository(session: AsyncSession = Depends(get_db)) -> Landmark
 
 def get_landmark_service(repository: LandmarkRepository = Depends(get_landmark_repository)) -> LandmarkService:
     return LandmarkService(repository)
+
+
+def get_accommodation_service():
+    return get_base_service(Accommodation)
+
+
+def get_event_service():
+    return get_base_service(Event)
+
+
+def get_restaurant_service():
+    return get_base_service(Restaurant)
+
+
+def get_social_media_accommodation_service():
+    return get_base_service(AccommodationSocialMedia)
+
+
+def get_social_media_event_service():
+    return get_base_service(EventSocialMedia)
+
+
+def get_social_media_restaurant_service():
+    return get_base_service(RestaurantSocialMedia)

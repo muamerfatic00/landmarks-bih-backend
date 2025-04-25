@@ -6,7 +6,7 @@ from src.app.models.timestamp import TimestampMixin
 
 
 class Restaurant(Base, TimestampMixin):
-    __tablename__ = 'restaurants'
+    __tablename__ = "restaurants"
 
     id = Column(Integer, primary_key=True)
     name = Column(String, nullable=False)
@@ -16,13 +16,13 @@ class Restaurant(Base, TimestampMixin):
     contact_number = Column(String)
     mail = Column(String)
     menu_url = Column(String)
-    city_id = Column(Integer, ForeignKey('cities.id', ondelete='SET NULL'))
-    landmark_id = Column(Integer, ForeignKey('landmarks.id', ondelete='SET NULL'))
+    city_id = Column(Integer, ForeignKey("cities.id", ondelete="SET NULL"))
+    landmark_id = Column(Integer, ForeignKey("landmarks.id", ondelete="SET NULL"))
 
     # relationships
-    city = relationship('City', back_populates='restaurants')
-    landmark = relationship('Landmark', back_populates='restaurants')
-    social_medias = relationship('RestaurantSocialMedia', back_populates='restaurant')
+    city = relationship("City", back_populates="restaurants")
+    landmark = relationship("Landmark", back_populates="restaurants")
+    social_medias = relationship("RestaurantSocialMedia", back_populates="restaurant")
 
     def __str__(self):
         return (f"<Restaurant(id={self.id}, name={self.name}, description={self.description}, "

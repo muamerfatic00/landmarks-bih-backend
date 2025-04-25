@@ -10,8 +10,8 @@ from src.app.repositories.base_repository import BaseRepository
 from src.app.schemas.pagination import PaginationParam
 from src.app.utils.dto_utils import to_dto
 
-ResponseModel = TypeVar('ResponseModel', bound=BaseModel)
-RequestModel = TypeVar('RequestModel', bound=BaseModel)
+ResponseModel = TypeVar("ResponseModel", bound=BaseModel)
+RequestModel = TypeVar("RequestModel", bound=BaseModel)
 
 
 class BaseService:
@@ -66,7 +66,7 @@ class BaseService:
             if isinstance(e, NoResultFound):
                 raise HTTPException(status_code=404, detail=str(e))
             if isinstance(e, IntegrityError):
-                raise HTTPException(status_code=400, detail=str(e))
+                raise HTTPException(status_code=403, detail="Data conflict: duplicate or invalid entry.")
             raise HTTPException(status_code=500, detail=str(e))
 
     async def delete_by_id(self, _id: int) -> None:
