@@ -7,20 +7,19 @@ from src.app.enums.social_media_type import SocialMediaType
 class RestaurantSocialMediaBase(CamelModel):
     type: SocialMediaType
     url: str
+    restaurant_id: int
 
 
 class RestaurantSocialMediaPostRequest(RestaurantSocialMediaBase):
-    restaurant_id: int
+    pass
 
 
 class RestaurantSocialMediaPutRequest(RestaurantSocialMediaBase):
     id: int
-    restaurant_id: int
 
 
 class RestaurantSocialMediaBaseResponse(RestaurantSocialMediaBase, TimestampDto):
     id: int
-    restaurant_id: int
 
     class Config:
         from_attributes = True

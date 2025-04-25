@@ -15,6 +15,10 @@ class CityBase(CamelModel):
     image_url: Optional[str]
     google_maps_url: Optional[str]
 
+    class Config:
+        from_attributes = True
+        arbitrary_types_allowed = True
+
 
 class CityPostRequest(CityBase):
     pass
@@ -30,7 +34,3 @@ class CityDetailResponse(CityBase, TimestampDto):
     accommodations: Optional[list[AccommodationBaseResponse]]
     events: Optional[list[EventBaseResponse]]
     restaurants: Optional[list[RestaurantBaseResponse]]
-
-    class Config:
-        from_attributes = True
-        arbitrary_types_allowed = True

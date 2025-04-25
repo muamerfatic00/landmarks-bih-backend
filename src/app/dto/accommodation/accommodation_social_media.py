@@ -7,20 +7,19 @@ from src.app.enums.social_media_type import SocialMediaType
 class AccommodationSocialMediaBase(CamelModel):
     type: SocialMediaType
     url: str
+    accommodation_id: int
 
 
 class AccommodationSocialMediaPostRequest(AccommodationSocialMediaBase):
-    accommodation_id: int
+    pass
 
 
 class AccommodationSocialMediaPutRequest(AccommodationSocialMediaBase):
     id: int
-    accommodation_id: int
 
 
 class AccommodationSocialMediaBaseResponse(AccommodationSocialMediaBase, TimestampDto):
     id: int
-    accommodation_id: int
 
     class Config:
         from_attributes = True

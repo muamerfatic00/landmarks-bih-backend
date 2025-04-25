@@ -17,6 +17,10 @@ class LandmarkBase(CamelModel):
     contact_number: Optional[str]
     mail: Optional[str]
 
+    class Config:
+        from_attributes = True
+        arbitrary_types_allowed = True
+
 
 class LandmarkPostRequest(LandmarkBase):
     city_id: Optional[int]
@@ -33,7 +37,3 @@ class LandmarkDetailResponse(LandmarkBase, TimestampDto):
     accommodations: Optional[list[AccommodationBaseResponse]]
     events: Optional[list[EventBaseResponse]]
     restaurants: Optional[list[RestaurantBaseResponse]]
-
-    class Config:
-        from_attributes = True
-        arbitrary_types_allowed = True
