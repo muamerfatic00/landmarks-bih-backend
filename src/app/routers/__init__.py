@@ -1,1 +1,6 @@
+from .accommodation_router import accommodation_router
 from .city_router import city_router
+from .landmark_router import landmark_router
+from .social_media.social_media_accommodation_router import social_media_accommodation_router
+from .social_media.social_media_event_router import social_media_event_router
+from .social_media.social_media_restaurant_router import social_media_restaurant_router
