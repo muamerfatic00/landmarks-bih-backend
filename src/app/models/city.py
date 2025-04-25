@@ -6,7 +6,7 @@ from src.app.models.timestamp import TimestampMixin
 
 
 class City(Base, TimestampMixin):
-    __tablename__ = 'cities'
+    __tablename__ = "cities"
 
     id = Column(Integer, primary_key=True)
     name = Column(String, nullable=False, unique=True)

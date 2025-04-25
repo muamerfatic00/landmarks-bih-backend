@@ -6,7 +6,7 @@ from src.app.models.timestamp import TimestampMixin
 
 
 class Event(Base, TimestampMixin):
-    __tablename__ = 'events'
+    __tablename__ = "events"
 
     id = Column(Integer, primary_key=True)
     name = Column(String, nullable=False)
@@ -17,13 +17,13 @@ class Event(Base, TimestampMixin):
     mail = Column(String)
     date = Column(Date)
     time = Column(Time)
-    city_id = Column(Integer, ForeignKey('cities.id', ondelete='SET NULL'))
-    landmark_id = Column(Integer, ForeignKey('landmarks.id', ondelete='SET NULL'))
+    city_id = Column(Integer, ForeignKey("cities.id", ondelete="SET NULL"))
+    landmark_id = Column(Integer, ForeignKey("landmarks.id", ondelete="SET NULL"))
 
     # relationships
-    city = relationship('City', back_populates='events')
-    landmark = relationship('Landmark', back_populates='events')
-    social_medias = relationship('EventSocialMedia', back_populates='event')
+    city = relationship("City", back_populates="events")
+    landmark = relationship("Landmark", back_populates="events")
+    social_medias = relationship("EventSocialMedia", back_populates="event")
 
     def __str__(self):
         return (f"<Event(id={self.id}, name={self.name}, description={self.description}, "

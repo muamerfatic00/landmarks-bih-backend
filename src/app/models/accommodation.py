@@ -6,7 +6,7 @@ from src.app.models.timestamp import TimestampMixin
 
 
 class Accommodation(Base, TimestampMixin):
-    __tablename__ = 'accommodations'
+    __tablename__ = "accommodations"
 
     id = Column(Integer, primary_key=True)
     name = Column(String, nullable=False)
@@ -15,12 +15,12 @@ class Accommodation(Base, TimestampMixin):
     google_maps_url = Column(String)
     contact_number = Column(String)
     mail = Column(String)
-    city_id = Column(Integer, ForeignKey('cities.id', ondelete='SET NULL'))
-    landmark_id = Column(Integer, ForeignKey('landmarks.id', ondelete='SET NULL'))
+    city_id = Column(Integer, ForeignKey("cities.id", ondelete="SET NULL"))
+    landmark_id = Column(Integer, ForeignKey("landmarks.id", ondelete="SET NULL"))
 
     # relationships
-    city = relationship('City', back_populates='accommodations')
-    landmark = relationship('Landmark', back_populates='accommodations')
+    city = relationship("City", back_populates="accommodations")
+    landmark = relationship("Landmark", back_populates="accommodations")
     social_medias = relationship("AccommodationSocialMedia", back_populates="accommodation")
 
     def __str__(self):
